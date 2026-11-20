@@ -1,0 +1,15 @@
+{
+  "name": "ucl-landing-page",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Quiz Champions League Landing Page - AWS Student Builder Group Algeria",
+  "scripts": {
+    "dev": "vite --host --port 5173",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.2.0"
+  }
+}

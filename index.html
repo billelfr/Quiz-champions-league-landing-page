@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Quiz Champions League | AWS Student Builder Group Algeria</title>
+  
+  <!-- Fonts & Google Icons -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#161D26',
+              darker: '#0F141A',
+              cell: '#1B232E',
+              cyan: '#3FA9F5',
+              cyanHover: '#2A97E3',
+              border: '#2A3441',
+              borderLight: '#374151',
+              muted: '#8D9CAE',
+              alert: '#FF4D4D'
+            }
+          },
+          fontFamily: {
+            mono: ['"JetBrains Mono"', '"Space Mono"', 'monospace'],
+          },
+          borderRadius: {
+            none: '0px'
+          }
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    * {
+      border-radius: 0px !important;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: #161D26;
+      color: #FFFFFF;
+      font-family: 'JetBrains Mono', monospace;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Technical Grid Borders */
+    .grid-border {
+      border-color: #2A3441;
+    }
+    .grid-border-light {
+      border-color: #374151;
+    }
+    
+    /* Subtle Micro Dot Pattern */
+    .bg-grid-tech {
+      background-image: radial-gradient(#2A3441 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    
+    /* Header Offset for Anchor Jumps */
+    section {
+      scroll-margin-top: 64px;
+    }
+    
+    /* Animated Word Cycler */
+    @keyframes cycleText1 {
+      0%, 28% { opacity: 1; visibility: visible; }
+      33%, 100% { opacity: 0; visibility: hidden; }
+    }
+    @keyframes cycleText2 {
+      0%, 28% { opacity: 0; visibility: hidden; }
+      33%, 61% { opacity: 1; visibility: visible; }
+      66%, 100% { opacity: 0; visibility: hidden; }
+    }
+    @keyframes cycleText3 {
+      0%, 61% { opacity: 0; visibility: hidden; }
+      66%, 95% { opacity: 1; visibility: visible; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+    .word-cycle-1 { animation: cycleText1 4.5s infinite; }
+    .word-cycle-2 { animation: cycleText2 4.5s infinite; }
+    .word-cycle-3 { animation: cycleText3 4.5s infinite; }
+
+    .hero-standings-table thead,
+    .hero-standings-table tbody tr {
+      background-color: transparent;
+    }
+    .hero-standings-table th,
+    .hero-standings-table td {
+      color: #0F141A;
+      border-color: rgba(15, 20, 26, 0.25);
+      padding: 2px 8px;
+      line-height: 1.15;
+      font-size: 10px;
+    }
+    .hero-standings-table tbody tr:nth-child(-n+16) td:first-child {
+      border-left: 2px solid rgba(15, 20, 26, 0.65);
+      font-weight: 800;
+    }
+    .hero-standings-table tbody tr:nth-child(n+18) {
+      opacity: 0.62;
+    }
+    .hero-standings-table tbody tr.playoff-cutoff td {
+      padding: 3px 8px;
+      border-top: 1px dashed rgba(15, 20, 26, 0.65);
+      border-bottom: 1px solid rgba(15, 20, 26, 0.25);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+
+<body class="bg-brand-navy text-white min-h-screen flex flex-col font-mono text-xs sm:text-sm selection:bg-brand-cyan selection:text-brand-navy">
+
+  <!-- ================================================================= -->
+  <!-- 01. TOP ARCHITECTURAL GRID HEADER (STICKY)                        -->
+  <!-- ================================================================= -->
+  <header class="w-full border-b border-brand-border bg-brand-navy sticky top-0 z-50">
+    <div class="max-w-[1600px] mx-auto grid grid-cols-[minmax(0,1fr)_auto] lg:grid-cols-12 border-l border-r border-brand-border">
+      <!-- Brand Coordinate & Identity Block (cols 1-5) -->
+      <div class="col-start-1 row-start-1 min-w-0 border-b border-brand-border p-3 sm:p-4 flex items-center bg-brand-navy lg:col-span-5 lg:border-b-0 lg:border-r">
+        <a href="#overview" class="min-w-0 flex items-center gap-3 hover:opacity-90 transition-opacity">
+          <!-- Microchip Silicon Glyphs / Icon -->
+          <div class="w-8 h-8 bg-brand-cyan text-brand-navy flex items-center justify-center font-bold shrink-0">
+            <span class="material-symbols-outlined text-[20px]">military_tech</span>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-white font-bold tracking-wider text-sm sm:text-base max-[359px]:text-xs">Quiz Champions League</span>
+            </div>
+            <div class="text-[10px] text-brand-muted uppercase tracking-wider flex items-center gap-2 font-mono max-[359px]:hidden">
+              <span>AWS Student Builder Group @ USTHB</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Navigation Grid Cells (cols 6-12) -->
+      <nav class="col-span-2 row-start-2 grid grid-cols-3 divide-x divide-brand-border border-b border-brand-border text-center lg:col-start-6 lg:col-span-6 lg:row-start-1 lg:border-b-0 lg:border-r" aria-label="Main navigation">
+        <a class="min-w-0 min-h-12 px-2 py-3 sm:py-4 flex items-center justify-center text-center text-[9px] min-[360px]:text-[10px] sm:text-[11px] font-bold tracking-wide uppercase text-brand-muted hover:bg-brand-cell/60 hover:text-brand-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-brand-cyan transition-colors" href="#how">How it works</a>
+        <a class="min-w-0 min-h-12 px-2 py-3 sm:py-4 flex items-center justify-center text-center text-[9px] min-[360px]:text-[10px] sm:text-[11px] font-bold tracking-wide uppercase text-brand-muted hover:bg-brand-cell/60 hover:text-brand-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-brand-cyan transition-colors" href="#try">Try a challenge</a>
+        <a class="min-w-0 min-h-12 px-2 py-3 sm:py-4 flex items-center justify-center text-center text-[9px] min-[360px]:text-[10px] sm:text-[11px] font-bold tracking-wide uppercase text-brand-muted hover:bg-brand-cell/60 hover:text-brand-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-brand-cyan transition-colors" href="#rules">Rules</a>
+      </nav>
+      <a class="col-start-2 row-start-1 min-h-12 px-2 py-2 bg-brand-cyan hover:bg-brand-cyanHover text-brand-navy font-bold tracking-wide text-[10px] flex items-center justify-center gap-1 uppercase whitespace-nowrap transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-brand-navy lg:col-start-12 lg:row-start-1 lg:border-l lg:border-brand-border" href="#join">
+        <span class="material-symbols-outlined text-[16px]">sports_esports</span>
+        REGISTER
+      </a>
+    </div>
+  </header>
+
+  <!-- ================================================================= -->
+  <!-- 02. HERO SECTION (ASYMMETRIC GEOMETRIC GRID)                      -->
+  <!-- ================================================================= -->
+  <section class="w-full border-b border-brand-border" id="overview">
+    <div class="max-w-[1600px] mx-auto border-l border-r border-brand-border grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-brand-border">
+      
+      <!-- Left Column: Primary Navy Block & Telemetry Statement (7 Cols) -->
+      <div class="lg:col-span-7 p-6 sm:p-10 lg:p-14 flex flex-col justify-between bg-brand-navy relative">
+        <!-- Headline & Statements -->
+        <div class="space-y-6">
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-none text-white uppercase font-mono">
+            QUIZ CHAMPIONS<div>LEAGUE</div>
+          </h1>
+          <p class="text-sm sm:text-base text-gray-300 font-mono leading-relaxed max-w-2xl">
+            A technical quiz tournament for AWS Student Builder Group members in Algeria. Solve real problems, climb the league table, reach the Top 16 and fight for the title.
+          </p>
+
+          <div class="mt-3 flex flex-wrap items-center gap-3 font-mono text-base sm:text-lg tracking-wider text-brand-cyan font-bold uppercase">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-brand-cyan">terminal</span>
+              <div class="relative inline-grid items-center h-7 min-w-[100px]">
+                <span class="word-cycle-1 col-start-1 row-start-1 text-brand-cyan">THINK.</span>
+                <span class="word-cycle-2 col-start-1 row-start-1 text-brand-cyan">SOLVE.</span>
+                <span class="word-cycle-3 col-start-1 row-start-1 text-brand-cyan">WIN.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action CTA Cell Row -->
+          <div class="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <a class="px-8 py-4 bg-brand-cyan hover:bg-brand-cyanHover text-brand-navy font-bold tracking-widest text-xs uppercase flex items-center justify-center gap-2 transition-colors" href="#join">
+              <span>REGISTER FOR THE LEAGUE</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+            <a class="px-8 py-4 border border-brand-border hover:border-brand-cyan text-white hover:text-brand-cyan font-bold tracking-widest text-xs uppercase flex items-center justify-center gap-2 transition-colors bg-brand-cell/50" href="#try">
+              <span class="material-symbols-outlined text-[16px]">terminal</span>
+              <span>TRY A SAMPLE CHALLENGE</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Metric Cells Grid -->
+        <div class="grid grid-cols-3 border-t border-brand-border mt-12 pt-6 divide-x divide-brand-border">
+          <div class="pr-4">
+            <div class="text-[10px] text-brand-muted uppercase tracking-widest">PLAYOFF SEATS</div>
+            <div class="text-2xl sm:text-3xl font-bold text-brand-cyan font-mono mt-1">16<span class="text-xs text-brand-muted">/QUALIFIED</span></div>
+          </div>
+          <div class="px-4">
+            <div class="text-[10px] text-brand-muted uppercase tracking-widest">TOURNAMENT STAGES</div>
+            <div class="text-2xl sm:text-3xl font-bold text-white font-mono mt-1">4<span class="text-xs text-brand-muted"> PHASES</span></div>
+          </div>
+          <div class="pl-4">
+            <div class="text-[10px] text-brand-muted uppercase tracking-widest">ELIGIBILITY</div>
+            <div class="text-2xl sm:text-3xl font-bold text-brand-cyan font-mono mt-1">100<span class="text-xs text-brand-muted">% MEMBERS</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Compact Quiz League Standings (5 Cols) -->
+      <div class="lg:col-span-5 min-w-0 bg-brand-cyan flex flex-col">
+        <div class="flex items-center justify-between gap-3 border-b border-brand-navy/30 bg-brand-cyan px-4 py-3 sm:px-6">
+          <div class="min-w-0">
+            <h2 class="text-sm sm:text-base font-extrabold text-brand-navy uppercase tracking-wide">League standings</h2>
+          </div>
+          <span class="shrink-0 border border-brand-navy/40 px-2 py-1 text-[9px] sm:text-[10px] text-brand-navy font-bold uppercase tracking-wider">Demo · 30 members</span>
+        </div>
+
+        <div class="min-w-0 flex-1 p-4 sm:p-6 flex flex-col justify-center">
+          <div class="min-w-0">
+            <table class="hero-standings-table w-full table-fixed border-collapse text-left font-mono text-[11px] sm:text-xs" aria-label="Demo quiz league standings with 30 illustrative participants">
+              <colgroup>
+                <col class="w-12 sm:w-14" />
+                <col />
+                <col class="w-16 sm:w-20" />
+              </colgroup>
+              <thead class="bg-transparent text-[9px] sm:text-[10px] uppercase tracking-wider">
+                <tr class="border-b border-brand-cyan/40">
+                  <th scope="col" class="px-2 py-2 text-left font-bold">Pos</th>
+                  <th scope="col" class="px-2 py-2 text-left font-bold">Participant</th>
+                  <th scope="col" class="px-2 py-2 text-right font-bold">Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 font-bold">01</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 font-bold text-white">yacine_cloud</td>
+                  <td class="px-2 py-1.5 text-right font-bold tabular-nums text-brand-cyan">1,350</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 font-bold text-brand-muted">02</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">amina_devops</td>
+                  <td class="px-2 py-1.5 text-right font-bold tabular-nums text-white">1,290</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 font-bold text-brand-muted">03</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">karim_usthb</td>
+                  <td class="px-2 py-1.5 text-right font-bold tabular-nums text-white">1,180</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">04</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">amir_lambda</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">1,120</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">05</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">rania_cloud</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">1,080</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">06</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">yasmine_dev</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">1,040</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">07</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">anes_compute</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">1,000</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">08</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">lina_stack</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">960</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">09</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">walid_aws</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">930</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">10</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">sara_bytes</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">900</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">11</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">youcef_kernel</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">870</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">12</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">nesrine_cli</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">850</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">13</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">amine_arch</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">830</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">14</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">farah_vpc</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">810</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">15</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">sofiane_dev</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">800</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">16</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">sofiane_b</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">790</td>
+                </tr>
+                <tr class="playoff-cutoff">
+                  <td colspan="3">Ranks 01-16 qualify for playoffs</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">17</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">mehdi_sys</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">740</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">18</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">nour_iam</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">720</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">19</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">ibrahim_s3</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">700</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">20</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">amira_node</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">680</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">21</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">zaki_serverless</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">650</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">22</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">ikram_db</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">620</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">23</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">rami_network</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">600</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">24</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">chaima_ec2</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">580</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">25</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">salim_lambda</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">550</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">26</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">maya_cloudops</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">520</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">27</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">bilal_stack</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">500</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">28</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">houda_cli</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">470</td>
+                </tr>
+                <tr class="border-b border-brand-border bg-[#173b58]">
+                  <td class="px-2 py-1.5 text-brand-muted">29</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">redouane_ops</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">440</td>
+                </tr>
+                <tr class="bg-[#204b6d]">
+                  <td class="px-2 py-1.5 text-brand-muted">30</td>
+                  <td class="overflow-hidden text-ellipsis whitespace-nowrap px-2 py-1.5 text-white">yacoub_data</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums text-white">410</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- 03. HOW THE LEAGUE WORKS (4-STAGE TOURNAMENT PROGRESSION)         -->
+  <!-- ================================================================= -->
+  <section class="w-full border-b border-brand-border bg-brand-navy" id="how">
+    <div class="max-w-[1600px] mx-auto border-l border-r border-brand-border">
+      <!-- Section Header Cell -->
+      <div class="p-6 sm:p-10 border-b border-brand-border flex flex-col md:flex-row md:items-center justify-between gap-4 bg-brand-darker">
+        <div>
+          <div class="text-brand-cyan font-mono text-xs uppercase tracking-widest mb-1">// TOURNAMENT STAGES</div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-white font-mono">HOW THE LEAGUE WORKS</h2>
+        </div>
+        <div class="text-xs text-brand-muted font-mono uppercase tracking-wider">
+          Four stages, from registration to the final. Pick a stage to see what happens.
+        </div>
+      </div>
+
+      <!-- 4 Numbered Steps Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-brand-border">
+        <!-- Stage 01 -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-navy hover:bg-brand-cell/40 transition-colors">
+          <div>
+            <div class="text-4xl font-extrabold text-brand-cyan font-mono mb-4">01</div>
+            <div class="text-xs font-bold text-white uppercase tracking-wider mb-2">Register on the event page</div>
+            <p class="text-brand-muted text-xs font-mono leading-relaxed">
+              Every club member signs up from this page. You will also find the rules, the schedule, the competition format and the current standings here.
+            </p>
+          </div>
+          <div class="pt-8 text-[10px] text-brand-cyan border-t border-brand-border mt-8 uppercase font-bold tracking-wider flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[14px]">how_to_reg</span>
+            MEMBER REGISTRATION
+          </div>
+        </div>
+
+        <!-- Stage 02 -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-navy hover:bg-brand-cell/40 transition-colors">
+          <div>
+            <div class="text-4xl font-extrabold text-white font-mono mb-4">02</div>
+            <div class="text-xs font-bold text-white uppercase tracking-wider mb-2">Collect points, climb the table</div>
+            <p class="text-brand-muted text-xs font-mono leading-relaxed">
+              All registered members take part in challenges and earn points. Your results decide your position in the overall league table.
+            </p>
+          </div>
+          <div class="pt-8 text-[10px] text-white border-t border-brand-border mt-8 uppercase font-bold tracking-wider flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[14px]">leaderboard</span>
+            LEAGUE TABLE RANKING
+          </div>
+        </div>
+
+        <!-- Stage 03 -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-navy hover:bg-brand-cell/40 transition-colors">
+          <div>
+            <div class="text-4xl font-extrabold text-brand-cyan font-mono mb-4">03</div>
+            <div class="text-xs font-bold text-white uppercase tracking-wider mb-2">The best 16 go knockout</div>
+            <p class="text-brand-muted text-xs font-mono leading-relaxed mb-4">
+              The 16 highest-ranked members qualify. You face an opponent in each round, and the winners advance until one participant wins the final.
+            </p>
+            <div class="space-y-1 text-[11px] font-mono border-l-2 border-brand-cyan pl-2 text-brand-cyan font-bold">
+              <div>• 16 Round of 16</div>
+              <div>• 8 Quarter-finals</div>
+              <div>• 4 Semi-finals</div>
+              <div>• 2 Finalists</div>
+              <div>• 1 Champion</div>
+            </div>
+          </div>
+          <div class="pt-8 text-[10px] text-brand-cyan border-t border-brand-border mt-8 uppercase font-bold tracking-wider flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[14px]">military_tech</span>
+            KNOCKOUT BRACKET
+          </div>
+        </div>
+
+        <!-- Stage 04 -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-navy hover:bg-brand-cell/40 transition-colors">
+          <div>
+            <div class="text-4xl font-extrabold text-white font-mono mb-4">04</div>
+            <div class="text-xs font-bold text-white uppercase tracking-wider mb-2">Solve it inside the arena</div>
+            <p class="text-brand-muted text-xs font-mono leading-relaxed">
+              Every challenge runs in the competition interface. Depending on the round you might pick an answer, type commands in a built-in terminal, or use tools the platform provides.
+            </p>
+          </div>
+          <div class="pt-8 text-[10px] text-white border-t border-brand-border mt-8 uppercase font-bold tracking-wider flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[14px]">terminal</span>
+            IN-ARENA PLATFORM TOOLS
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- 04. TRY A SAMPLE CHALLENGE (CHALLENGE FORMATS)                    -->
+  <!-- ================================================================= -->
+  <section class="w-full border-b border-brand-navy/30 bg-brand-cyan" id="try">
+    <div class="max-w-[1600px] mx-auto border-l border-r border-brand-navy/30">
+      <!-- Section Header -->
+      <div class="p-6 sm:p-10 border-b border-brand-navy/30 bg-brand-cyan flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="text-brand-navy font-mono text-xs uppercase tracking-widest mb-1">// PRACTICE &amp; FORMAT SPECIFICATIONS</div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-brand-navy font-mono">TRY A SAMPLE CHALLENGE</h2>
+        </div>
+        <div class="text-xs text-brand-navy font-mono uppercase tracking-wider max-w-md">
+          These are practice examples, not real competition questions. The actual questions stay secret until the event.
+        </div>
+      </div>
+
+      <!-- Format Grid Layout: 5 Challenge Modalities -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-brand-navy/30 border-b border-brand-navy/30">
+        
+        <!-- Type 1: Quick Question (Interactive MCQ) -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-cyan">
+          <div>
+            <div class="flex items-center gap-2 text-brand-navy text-xs font-bold uppercase tracking-wider mb-3">
+              <span class="material-symbols-outlined text-[18px]">radio_button_checked</span>
+              FORMAT // 01
+            </div>
+            <h3 class="text-base font-bold text-brand-navy uppercase mb-2">Quick question</h3>
+            <p class="text-brand-navy text-xs leading-relaxed font-mono mb-4">
+              Multiple choice verification testing core concepts, protocols, and architectural knowledge under rapid timing bounds.
+            </p>
+            <div class="p-3 bg-[#173b58] border border-brand-navy/40 text-[11px] font-mono text-gray-300">
+              <span class="text-brand-cyan font-bold">[MCQ]</span> Which AWS service provides resizable compute capacity in the cloud?
+              <div class="mt-3 grid grid-cols-2 gap-2" id="mcq-options">
+                <button onclick="handleMcqChoice('A', this)" class="p-1.5 border border-brand-cyan/40 hover:border-brand-cyan text-left text-white hover:bg-[#24547a] transition-colors bg-[#204b6d]">A) S3</button>
+                <button onclick="handleMcqChoice('B', this)" class="p-1.5 border border-brand-cyan/40 hover:border-brand-cyan text-left text-white hover:bg-[#24547a] transition-colors bg-[#204b6d]">B) EC2</button>
+                <button onclick="handleMcqChoice('C', this)" class="p-1.5 border border-brand-cyan/40 hover:border-brand-cyan text-left text-white hover:bg-[#24547a] transition-colors bg-[#204b6d]">C) RDS</button>
+                <button onclick="handleMcqChoice('D', this)" class="p-1.5 border border-brand-cyan/40 hover:border-brand-cyan text-left text-white hover:bg-[#24547a] transition-colors bg-[#204b6d]">D) IAM</button>
+              </div>
+              <div id="mcq-feedback" class="mt-2 text-[10px] hidden font-mono"></div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-navy/30 text-[10px] text-brand-navy font-bold uppercase flex items-center justify-between">
+            <span>MULTIPLE CHOICE EVALUATION</span>
+            <span class="text-brand-navy font-normal text-[9px]">[INTERACTIVE]</span>
+          </div>
+        </div>
+
+        <!-- Type 2: Console Challenge (Interactive Terminal Mock) -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-cyan">
+          <div>
+            <div class="flex items-center gap-2 text-brand-navy text-xs font-bold uppercase tracking-wider mb-3">
+              <span class="material-symbols-outlined text-[18px]">terminal</span>
+              FORMAT // 02
+            </div>
+            <h3 class="text-base font-bold text-brand-navy uppercase mb-2">Console challenge</h3>
+            <p class="text-brand-navy text-xs leading-relaxed font-mono mb-4">
+              Interactive console tasks executed directly inside the competition terminal with immediate stdout verification.
+            </p>
+            <div class="p-3 bg-[#173b58] border border-brand-navy/40 text-[11px] font-mono space-y-2">
+              <div class="text-gray-300">// Task: list all S3 buckets in your account using the AWS CLI</div>
+              <div class="text-gray-400">// Type a command and press Enter. (hint / help / clear)</div>
+              <div class="flex items-center gap-1 text-brand-cyan font-bold pt-1">
+                <span>$</span>
+                <input 
+                  type="text" 
+                  id="cli-input" 
+                  placeholder="aws s3 ls" 
+                  class="bg-transparent border-none outline-none text-brand-cyan font-mono text-xs w-full p-0 focus:ring-0 placeholder:text-brand-cyan/40"
+                  onkeydown="handleCliKey(event)"
+                />
+              </div>
+              <div id="cli-output" class="text-[10px] text-emerald-400 space-y-0.5 max-h-24 overflow-y-auto hidden"></div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-navy/30 text-[10px] text-brand-navy font-bold uppercase flex items-center justify-between">
+            <span>INTERACTIVE CLI ENVIRONMENT</span>
+            <button onclick="runSampleCli()" class="text-brand-navy hover:underline text-[10px] font-mono font-normal">RUN 'aws s3 ls'</button>
+          </div>
+        </div>
+
+        <!-- Type 3: Problem-solving scenarios -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-cyan">
+          <div>
+            <div class="flex items-center gap-2 text-brand-navy text-xs font-bold uppercase tracking-wider mb-3">
+              <span class="material-symbols-outlined text-[18px]">architecture</span>
+              FORMAT // 03
+            </div>
+            <h3 class="text-base font-bold text-brand-navy uppercase mb-2">Problem-solving scenarios</h3>
+            <p class="text-brand-navy text-xs leading-relaxed font-mono mb-4">
+              Read a technical situation and find the right solution. Evaluate cost, high availability, resilience, and latency trade-offs.
+            </p>
+            <div class="p-3 bg-[#173b58] border border-brand-navy/40 text-[11px] font-mono text-gray-300">
+              <span class="text-brand-cyan font-bold">[SCENARIO]</span> Design a multi-AZ fault-tolerant database tier with automatic failover in under 60 seconds.
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-navy/30 text-[10px] text-brand-navy font-bold uppercase">
+            ARCHITECTURAL CASE STUDIES
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom 2 modalities in split row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-brand-navy/30">
+        <!-- Type 5: Practical Tasks -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-cyan">
+          <div>
+            <div class="flex items-center gap-2 text-brand-navy text-xs font-bold uppercase tracking-wider mb-3">
+              <span class="material-symbols-outlined text-[18px]">bug_report</span>
+              FORMAT // 05
+            </div>
+            <h3 class="text-base font-bold text-brand-navy uppercase mb-2">Practical tasks</h3>
+            <p class="text-brand-navy text-xs leading-relaxed font-mono">
+              Debug code, spot errors, or fix infrastructure and networking problems under simulated production outage scenarios.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-navy/30 text-[10px] text-brand-navy uppercase font-bold">
+            DEBUGGING &amp; TROUBLESHOOTING
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- 05. RULES (INTEGRITY PROTOCOL)                                    -->
+  <!-- ================================================================= -->
+  <section class="w-full border-b border-brand-border bg-brand-navy" id="rules">
+    <div class="max-w-[1600px] mx-auto border-l border-r border-brand-border">
+      <!-- Section Header -->
+      <div class="p-6 sm:p-10 border-b border-brand-border bg-brand-darker flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="text-brand-cyan font-mono text-xs uppercase tracking-widest mb-1">// COMPETITION INTEGRITY &amp; STANDARDS</div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-white font-mono">RULES</h2>
+        </div>
+        <div class="text-xs text-brand-alert font-mono uppercase tracking-wider">
+          CLEAR TOURNAMENT REGULATIONS &amp; ENFORCEMENT
+        </div>
+      </div>
+
+      <!-- Context Lead Row -->
+      <div class="p-6 sm:p-8 border-b border-brand-border bg-brand-cell/60">
+        <p class="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed max-w-4xl">
+          A website can detect some page-leave events, but it cannot prove nobody used another device. So we are defining clear rules instead of relying on detection alone.
+        </p>
+      </div>
+
+      <!-- 3 Key Rules Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-brand-border">
+        <!-- Rule 1 -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-navy">
+          <div>
+            <div class="flex items-center gap-2 text-brand-alert font-bold text-xs uppercase tracking-widest mb-3">
+              <span class="material-symbols-outlined text-[18px]">tab_close</span>
+              RULE 01 // FOCUS BOUNDS
+            </div>
+            <h3 class="text-base font-bold text-white uppercase mb-2">Stay in the arena</h3>
+            <p class="text-brand-muted text-xs leading-relaxed font-mono">
+              Leaving the challenge page may cost you the round. The final penalty (warning first, or direct disqualification) will be announced before the event.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border text-[10px] text-brand-alert font-bold uppercase">
+            FOCUS MONITOR ACTIVE
+          </div>
+        </div>
+
+        <!-- Rule 2 -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-navy">
+          <div>
+            <div class="flex items-center gap-2 text-brand-cyan font-bold text-xs uppercase tracking-widest mb-3">
+              <span class="material-symbols-outlined text-[18px]">wifi_off</span>
+              RULE 02 // FAULT TOLERANCE
+            </div>
+            <h3 class="text-base font-bold text-white uppercase mb-2">Technical problems</h3>
+            <p class="text-brand-muted text-xs leading-relaxed font-mono">
+              Accidental refreshes, browser crashes and network drops will have a clear recovery rule, so a glitch does not decide the result.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border text-[10px] text-brand-cyan font-bold uppercase">
+            SESSION RECOVERY PROTOCOL
+          </div>
+        </div>
+
+        <!-- Rule 3 -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between bg-brand-navy">
+          <div>
+            <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-widest mb-3">
+              <span class="material-symbols-outlined text-[18px]">travel_explore</span>
+              RULE 03 // SEARCH BOUNDS
+            </div>
+            <h3 class="text-base font-bold text-white uppercase mb-2">Web search</h3>
+            <p class="text-brand-muted text-xs leading-relaxed font-mono">
+              Searching is allowed only in research challenges. Each challenge states its own rule up front so expectations remain transparent.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border text-[10px] text-white font-bold uppercase">
+            EXPLICIT PER-CHALLENGE DIRECTIVES
+          </div>
+        </div>
+      </div>
+
+      <!-- Callout Note Footer -->
+      <div class="p-4 sm:p-6 bg-brand-darker border-t border-brand-border flex items-center justify-between text-[11px] font-mono text-brand-muted">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-brand-cyan text-[16px]">info</span>
+          <span>Note: These rules are still being finalized by the organizing team.</span>
+        </div>
+        <span class="text-brand-cyan uppercase">[ AWS SBG ALGERIA BYLAWS ]</span>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ================================================================= -->
+  <!-- 07. FINAL CTA BANNER (ENROLLMENT PROTOCOL)                        -->
+  <!-- ================================================================= -->
+  <section class="w-full border-b border-brand-border bg-brand-navy" id="join">
+    <div class="max-w-[1600px] mx-auto border-l border-r border-brand-border grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-brand-border">
+      
+      <!-- Cyan Statement Block (8 Cols) -->
+      <div class="lg:col-span-8 p-8 sm:p-12 lg:p-16 bg-brand-cyan text-brand-navy flex flex-col justify-between">
+        <div>
+          <div class="text-[11px] font-bold uppercase tracking-widest pb-4 border-b border-brand-navy/30 mb-6 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">military_tech</span>
+            <span>SYSTEM ENROLLMENT PROTOCOL // AWS SBG ALGERIA</span>
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold uppercase tracking-tight leading-none mb-6">
+            JOIN THE LEAGUE
+          </h2>
+          <p class="text-xs sm:text-sm font-semibold max-w-xl leading-relaxed">
+            Every member of the club can take part. Register to get your place in the table.
+          </p>
+        </div>
+
+        <div class="pt-8 flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <button onclick="handleRegisterClick()" class="px-8 py-4 bg-brand-navy hover:bg-brand-darker text-white font-bold tracking-widest text-xs uppercase flex items-center justify-center gap-2 transition-colors">
+              <span>REGISTER NOW</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </button>
+           
+          </div>
+          <p class="text-[10px] font-bold text-brand-navy/80 uppercase tracking-tight">
+            By registering for events, you certify that you have read and agree to the AWS Event Terms and Conditions.
+          </p>
+        </div>
+      </div>
+
+      <!-- Navy Verification Meta Block (4 Cols) -->
+      <div class="lg:col-span-4 p-8 sm:p-12 bg-brand-navy flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="text-[11px] text-brand-cyan uppercase tracking-widest font-bold">COMMUNITY CHAPTER</div>
+          <div class="text-white font-bold text-base uppercase">AWS STUDENT BUILDER GROUP ALGERIA</div>
+          <p class="text-brand-muted text-xs leading-relaxed font-mono">
+            Official collegiate league organized across Algeria by AWS Student Builder Group community members.
+          </p>
+        </div>
+        <div class="mt-8 pt-6 border-t border-brand-border space-y-2 text-[10px] text-brand-muted uppercase font-mono">
+          <div>CHAPTER: AWS-SBG-ALGERIA</div>
+          <div>EVENT: QUIZ-CHAMPIONS-LEAGUE-2025</div>
+          <div class="text-brand-cyan">STATUS: REGISTRATION OPEN</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  
+
+      <!-- Footer Bottom Copyright Bar -->
+      <div class="p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-brand-muted uppercase font-mono bg-brand-navy">
+        <div>© 2025 AWS STUDENT BUILDER GROUP ALGERIA. ALL RIGHTS RESERVED.</div>
+        <div class="flex items-center gap-4">
+          <span>ALGORITHMIC INTEGRITY VERIFIED</span>
+          <span class="text-brand-cyan">SYS.VER // 2.5.0</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================================================================= -->
+  <!-- 09. MODALS & TOAST NOTIFICATION CONTAINER                         -->
+  <!-- ================================================================= -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-brand-cyan text-brand-navy font-mono text-xs font-bold px-4 py-3 shadow-lg border border-white/20 hidden transition-all duration-300"></div>
+
+  <!-- ================================================================= -->
+  <!-- 10. SCRIPTS & INTERACTION LOGIC                                   -->
+  <!-- ================================================================= -->
+  <script>
+    // MCQ Practice Evaluator
+    function handleMcqChoice(option, btn) {
+      const buttons = document.querySelectorAll('#mcq-options button');
+      buttons.forEach(b => {
+        b.className = 'p-1.5 border border-brand-cyan/40 hover:border-brand-cyan hover:bg-[#24547a] text-left text-white transition-colors bg-[#204b6d]';
+      });
+
+      const feedback = document.getElementById('mcq-feedback');
+      feedback.classList.remove('hidden');
+
+      if (option === 'B') {
+        btn.className = 'p-1.5 border border-emerald-400 bg-emerald-500/20 text-emerald-300 font-bold text-left';
+        feedback.className = 'mt-2 text-[10px] text-emerald-400 font-mono';
+        feedback.innerHTML = '✓ CORRECT: Amazon EC2 provides scalable and resizable computing capacity in AWS.';
+      } else {
+        btn.className = 'p-1.5 border border-brand-alert bg-brand-alert/20 text-brand-alert font-bold text-left';
+        feedback.className = 'mt-2 text-[10px] text-brand-alert font-mono';
+        feedback.innerHTML = '✗ INCORRECT: Look into compute services. (Hint: Elastic Compute Cloud).';
+      }
+    }
+
+    // Interactive CLI Simulator
+    function handleCliKey(event) {
+      if (event.key === 'Enter') {
+        const val = event.target.value.trim().toLowerCase();
+        executeCliCommand(val);
+      }
+    }
+
+    function runSampleCli() {
+      const input = document.getElementById('cli-input');
+      input.value = 'aws s3 ls';
+      executeCliCommand('aws s3 ls');
+    }
+
+    function executeCliCommand(cmd) {
+      const output = document.getElementById('cli-output');
+      output.classList.remove('hidden');
+
+      if (cmd === 'aws s3 ls') {
+        output.innerHTML = `
+          <div class="text-brand-muted">2025-02-14 10:23:19 sbg-algeria-assets</div>
+          <div class="text-brand-muted">2025-03-01 18:45:02 quiz-league-telemetry</div>
+          <div class="text-brand-muted">2025-03-15 09:12:44 ucl-leaderboard-store</div>
+          <div class="text-emerald-400 font-bold pt-1">[STATUS 200 OK] 3 S3 buckets identified.</div>
+        `;
+      } else if (cmd === 'hint') {
+        output.innerHTML = `<div class="text-brand-cyan">HINT: Run 'aws s3 ls' to list all Amazon S3 buckets.</div>`;
+      } else if (cmd === 'help') {
+        output.innerHTML = `<div class="text-gray-300">COMMANDS: aws s3 ls, hint, clear, help</div>`;
+      } else if (cmd === 'clear') {
+        output.innerHTML = '';
+        output.classList.add('hidden');
+      } else {
+        output.innerHTML = `<div class="text-brand-alert">zsh: command not found: ${cmd}. Type 'hint' or 'aws s3 ls'.</div>`;
+      }
+    }
+
+    // Toast Notification Feedback
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    function handleRegisterClick() {
+      showToast('Registration window is active. Follow instructions to enroll!');
+      const joinSection = document.getElementById('join');
+      joinSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleCommunityClick() {
+      showToast('Redirecting to AWS Student Builder Group community portal...');
+    }
+  </script>
+</body>
+</html>
